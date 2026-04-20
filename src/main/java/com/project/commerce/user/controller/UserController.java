@@ -1,0 +1,50 @@
+package com.project.commerce.user.controller;
+
+import com.project.commerce.global.response.ApiResponse;
+import com.project.commerce.user.dto.UserRequestDTO;
+import com.project.commerce.user.dto.UserResponseDTO;
+import com.project.commerce.user.entity.User;
+import com.project.commerce.user.mapper.UserMapper;
+import com.project.commerce.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @PostMapping
+    public ApiResponse<?> create(@RequestBody UserRequestDTO dto) {
+        userService.createUser(dto);
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping
+    public ApiResponse<List<UserResponseDTO>> getAll() {
+        return ApiResponse.success(userService.getUsers());
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponse<UserResponseDTO> getUser(@PathVariable Long id) {
+        return ApiResponse.success(userService.getUser(id));
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<?> update(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
+        userService.updateUser(id, dto);
+        return ApiResponse.success(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<?> delete(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ApiResponse.success(null);
+    }
+}
