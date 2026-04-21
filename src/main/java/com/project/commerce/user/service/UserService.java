@@ -10,6 +10,7 @@ import com.project.commerce.user.entity.User;
 import com.project.commerce.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     // CREATE
+    @Transactional
     public void createUser(UserRequestDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
@@ -70,6 +72,7 @@ public class UserService {
     }
 
     // DELETE
+    @Transactional
     public void deleteUser(Long id) {
         userMapper.deleteUser(id);
     }
