@@ -1,17 +1,16 @@
 package com.project.commerce.user.controller;
 
 import com.project.commerce.global.response.ApiResponse;
+import com.project.commerce.user.dto.LoginRequestDTO;
+import com.project.commerce.user.dto.LoginResponseDTO;
 import com.project.commerce.user.dto.UserRequestDTO;
 import com.project.commerce.user.dto.UserResponseDTO;
-import com.project.commerce.user.entity.User;
-import com.project.commerce.user.mapper.UserMapper;
 import com.project.commerce.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -47,4 +46,17 @@ public class UserController {
         userService.deleteUser(id);
         return ApiResponse.success(null);
     }
+
+    @PostMapping("/login")
+    public ApiResponse<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+        String token = userService.login(dto.getEmail());
+        return ApiResponse.success(new LoginResponseDTO(token));
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<String> me(HttpServletRequest request) {
+        String email = (String) request.getAttribute("userEmail");
+        return ApiResponse.success(email);
+    }
+
 }

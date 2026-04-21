@@ -1,6 +1,9 @@
 package com.project.commerce.user.service;
 
 //import com.project.commerce.global.exception.CustomException;
+
+import com.project.commerce.global.exception.CustomException;
+import com.project.commerce.global.jwt.JwtUtil;
 import com.project.commerce.user.dto.UserRequestDTO;
 import com.project.commerce.user.dto.UserResponseDTO;
 import com.project.commerce.user.entity.User;
@@ -44,9 +47,9 @@ public class UserService {
     public UserResponseDTO getUser(Long id) {
         User user = userMapper.findById(id);
 
-//        if (user == null) {
-//            throw new CustomException(404, "User not found");
-//        }
+        if (user == null) {
+            throw new CustomException(404, "User not found");
+        }
 
         return UserResponseDTO.builder()
                 .id(user.getId())
@@ -69,5 +72,12 @@ public class UserService {
     // DELETE
     public void deleteUser(Long id) {
         userMapper.deleteUser(id);
+    }
+
+    public String login(String email) {
+        User user = userMapper.findByEmail(email)
+                .orElseThrow(() -> new CustomException(404, "USER NOT FOUND"));
+
+        return JwtUtil.createToken(user.getEmail());
     }
 }
