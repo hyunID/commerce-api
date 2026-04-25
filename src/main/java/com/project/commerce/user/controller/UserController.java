@@ -49,6 +49,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ApiResponse<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) {
+        System.out.println("로그인 시도 컨트롤러: " );
         String token = userService.login(dto.getEmail());
         return ApiResponse.success(new LoginResponseDTO(token));
     }

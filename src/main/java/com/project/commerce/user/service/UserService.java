@@ -78,9 +78,16 @@ public class UserService {
     }
 
     public String login(String email) {
+        System.out.println("로그인 시도: " + email);
         User user = userMapper.findByEmail(email)
                 .orElseThrow(() -> new CustomException(404, "USER NOT FOUND"));
 
-        return JwtUtil.createToken(user.getEmail());
+        System.out.println("유저 찾음: " + user.getEmail());
+
+        String token = JwtUtil.createToken(user.getEmail());
+        System.out.println("토큰 생성 완료");
+
+        return token;
+
     }
 }
